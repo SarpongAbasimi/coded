@@ -16,14 +16,13 @@ class RegistrationService {
     }
     signUp(details) {
         return __awaiter(this, void 0, void 0, function* () {
-            let result = yield this.prisma.user.create({
+            yield this.prisma.user.create({
                 data: {
                     email: `${details.email}`,
                     name: `${details.name}`,
                     password: `${details.password}`,
                 },
             });
-            console.log(result);
         });
     }
 }

@@ -10,13 +10,12 @@ export class RegistrationService implements Registration {
   }
 
   public async signUp(details: UserDetails): Promise<void> {
-    let result: User = await this.prisma.user.create({
+    await this.prisma.user.create({
       data: {
         email: `${details.email}`,
         name: `${details.name}`,
         password: `${details.password}`,
       },
     });
-    console.log(result);
   }
 }

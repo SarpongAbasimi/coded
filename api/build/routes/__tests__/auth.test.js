@@ -15,17 +15,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("@jest/globals");
 const index_1 = require("../../server/index");
 const supertest_1 = __importDefault(require("supertest"));
+const client_1 = require("@prisma/client");
+/**
+ * Find a way to mock the client
+ */
+(0, globals_1.afterAll)(() => __awaiter(void 0, void 0, void 0, function* () {
+    return yield new client_1.PrismaClient().user.deleteMany({ where: {} });
+}));
 (0, globals_1.describe)("The auth endpoint", () => {
     (0, globals_1.describe)("When a POST request is sent to /register", () => {
         (0, globals_1.test)("If the request it sucessfult it returns a 201 status code", () => __awaiter(void 0, void 0, void 0, function* () {
-            const payload = {
-                name: "john",
-                email: "xyz@sadfjak.com",
-                password: "2342388",
-            };
             const response = yield (0, supertest_1.default)(index_1.app)
                 .post("/api/v1/auth/register")
-                .send(payload)
+                .send({
+                name: "john",
+                email: "xyz@demo.com",
+                password: "2342388",
+            })
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json");
             (0, globals_1.expect)(response.statusCode).toBe(201);
