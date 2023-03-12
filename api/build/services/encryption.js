@@ -9,24 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RegistrationService = void 0;
-class RegistrationService {
-    constructor(prismaClient, encryptionService) {
-        this.prisma = prismaClient;
-        this.encrptionService = encryptionService;
-    }
-    signUp(details) {
+exports.EncryptionService = void 0;
+const bcrypt_1 = require("bcrypt");
+class EncryptionService {
+    encrypt(password) {
         return __awaiter(this, void 0, void 0, function* () {
-            let unHashedPassword = { value: details.password };
-            let hashedPassword = yield this.encrptionService.encrypt(unHashedPassword);
-            yield this.prisma.user.create({
-                data: {
-                    email: `${details.email}`,
-                    name: `${details.name}`,
-                    password: `${hashedPassword.value}`,
-                },
-            });
+            const hashedPassword = {
+                value: yield (0, bcrypt_1.hash)(password.value, 10),
+            };
+            return hashedPassword;
         });
     }
 }
-exports.RegistrationService = RegistrationService;
+exports.EncryptionService = EncryptionService;

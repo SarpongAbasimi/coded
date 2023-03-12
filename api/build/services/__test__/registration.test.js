@@ -11,9 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("@jest/globals");
 const client_1 = require("@prisma/client");
-const Registration_1 = require("../Registration");
+const registration_1 = require("../registration");
+const encryption_1 = require("../encryption");
 const prisma = new client_1.PrismaClient();
-const resgistrationsService = new Registration_1.RegistrationService(prisma);
+const encrptionService = new encryption_1.EncryptionService();
+const resgistrationsService = new registration_1.RegistrationService(prisma, encrptionService);
 (0, globals_1.afterAll)(() => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma.user.deleteMany({ where: {} });
 }));
@@ -32,6 +34,7 @@ const resgistrationsService = new Registration_1.RegistrationService(prisma);
                 },
             });
             (0, globals_1.expect)(queryResult === null || queryResult === void 0 ? void 0 : queryResult.name).toEqual("name");
+            (0, globals_1.expect)(queryResult === null || queryResult === void 0 ? void 0 : queryResult.email).toEqual("email@demo.com");
         }));
     });
 });

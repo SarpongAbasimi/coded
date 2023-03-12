@@ -1,11 +1,13 @@
 import { describe, expect, test, afterAll } from "@jest/globals";
 import { PrismaClientOptions } from "@prisma/client/runtime";
 import { PrismaClient, User } from "@prisma/client";
-import { RegistrationService } from "../Registration";
-import { UserDetails } from "../../interfaces/Interfaces";
+import { RegistrationService } from "../registration";
+import { UserDetails, Encryptor } from "../../interfaces/Interfaces";
+import { EncryptionService } from "../encryption";
 
 const prisma: PrismaClient<PrismaClientOptions> = new PrismaClient();
-const resgistrationsService = new RegistrationService(prisma);
+const encrptionService: Encryptor = new EncryptionService();
+const resgistrationsService = new RegistrationService(prisma, encrptionService);
 
 afterAll(async () => {
   return await prisma.user.deleteMany({ where: {} });
@@ -28,6 +30,7 @@ describe("Resgistration", () => {
       });
 
       expect(queryResult?.name).toEqual("name");
+      expect(queryResult?.email).toEqual("email@demo.com");
     });
   });
 });
